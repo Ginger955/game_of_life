@@ -131,13 +131,13 @@ class World:
 				if node.get_color == 'yellow':
 					pygame.draw.rect(DISPLAY, YELLOW, (math.ceil((self.width/self.size))*left_multiplier,
 													   math.ceil((self.height/self.size))*top_multiplier,
-													   self.size,
-													   self.size))
+													   math.ceil(self.width/self.size),
+													   math.ceil(self.height / self.size)))
 				else:
-					pygame.draw.rect(DISPLAY, WHITE, (math.ceil((self.width/self.size))*left_multiplier,
+					pygame.draw.rect(DISPLAY, BLACK, (math.ceil((self.width/self.size))*left_multiplier,
 													  math.ceil((self.height/self.size))*top_multiplier,
-													  self.size,
-													  self.size))
+													  math.ceil(self.width/self.size),
+													  math.ceil(self.height / self.size)))
 				left_multiplier += 1
 			top_multiplier += 1
 		pygame.display.update()
@@ -170,7 +170,7 @@ class World:
 
 	def run(self):
 		self.draw_world()
-		self.print_state()
+		# self.print_state()
 		time.sleep(0.1)
 		new_world = []
 		next_generation = []
@@ -184,17 +184,17 @@ class World:
 				if alive_neighbours < 2 and node.get_color == 'white':
 					newNode = Node(current_coordinates[0], current_coordinates[1], node.get_size)
 					newNode.set_color('yellow')
-					print('[' + str(node.get_coordinates) + '] dies. Alive neighbours:'+str(alive_neighbours))
+					# print('[' + str(node.get_coordinates) + '] dies. Alive neighbours:'+str(alive_neighbours))
 				elif alive_neighbours == 2 or alive_neighbours == 3 and node.get_color == 'white':
 					print('['+str(node.get_coordinates)+'] lives onto the next generation')
 				elif alive_neighbours > 3 and node.get_color == 'white':
 					newNode = Node(current_coordinates[0], current_coordinates[1], node.get_size)
 					newNode.set_color('yellow')
-					print('[' + str(node.get_coordinates) + '] dies. Alive neighbours:' + str(alive_neighbours))
+					# print('[' + str(node.get_coordinates) + '] dies. Alive neighbours:' + str(alive_neighbours))
 				elif alive_neighbours == 3 and node.get_color == 'yellow':
 					newNode = Node(current_coordinates[0], current_coordinates[1], node.get_size)
 					newNode.set_color('white')
-					print('[' + str(node.get_coordinates) + '] revived. Alive neighbours:'+str(alive_neighbours))
+					# print('[' + str(node.get_coordinates) + '] revived. Alive neighbours:'+str(alive_neighbours))
 
 				if newNode is not None:
 					next_generation.append(newNode)
@@ -203,16 +203,16 @@ class World:
 			new_world.append(next_generation)
 			next_generation = []
 		if self.is_everyone_dead():
-			self.print_state()
+			# self.print_state()
 			print("[EVERYONE IS DEAD]")
 			sys.exit()
 		elif self.is_it_stable(new_world):
-			self.print_state()
+			# self.print_state()
 			print("[WORLD IS STABLE]")
 			sys.exit()
 		self.world = new_world
 		self.run()
 
 
-world = World(200, 800, 800)
+world = World(100, 1500, 1500)
 world.run()
